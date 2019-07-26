@@ -11,8 +11,8 @@ export default class RouterWrap extends Component {
         <HashRouter>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
-              <Route path="/" component ={Layout} exact></Route>
-              <Route path="/login/:name" component ={Login}></Route>
+              <Route path="/" component = {Layout} exact></Route>
+              <Route path="/login" component = {Login}></Route>
             </Switch>
           </Suspense>
         </HashRouter>

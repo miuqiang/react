@@ -40,7 +40,7 @@ export default class Layout extends Component {
     });
   }
   handleRouter = () => {
-    this.props.history.push('/login/aaa');
+    this.props.history.push('/login');
     // this.props.history.push({pathname:'/login',query:{name:'miaoqiang',age:31}});
   }
 

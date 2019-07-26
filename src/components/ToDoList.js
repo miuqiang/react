@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Input, Button, List } from 'antd';
+import ToDoItemUi from './ToDoItemUi.jsx';
 import store from '../store/index';
-import { CHANGE_INPUT_VAL, ADD_INPUT_VAL, DELETE_ITEM } from '../store/actionTypes';
-
-
+import { getInputValChangeAction, handleSubmit, handleDelete } from "../store/actionCreators.js";
 export default class ToDoList extends Component {
 
   constructor(props) {
@@ -14,48 +12,34 @@ export default class ToDoList extends Component {
 
   render() {
     return (
-      <div style={{ width: '500px', margin: '0 auto' }}>
-        <Input placeholder="Basic usage" onChange={this.handleChange} onKeyUp={this.handleEnter} value={this.state.value} />
-        <Button type="primary" block onClick={this.handleClick}>提交</Button>
-        <br />
-        <br />
-        <List
-          bordered
-          dataSource={this.state.list}
-          renderItem={(item,index) => (
-            <List.Item onClick={this.handleDelete.bind(this,index)}>
-              {item}
-            </List.Item>
-          )}
-        />
-      </div>
+      <ToDoItemUi
+        list={this.state.list}
+        value={this.state.value}
+        handleChange={this.handleChange}
+        handleEnter={this.handleEnter}
+        handleClick={this.handleClick}
+        handleDelete={this.handleDelete}
+      />
     )
   }
 
+  componentDidMount() {
+    console.log('1')
+  }
+
   handleClick = () => {
-    if(!this.state.value) return;
-    
-    const action = {
-      type: ADD_INPUT_VAL
-    }
-
+    if (!this.state.value) return;
+    const action = handleSubmit();
     store.dispatch(action);
-
   }
 
   handleChange = (e) => {
-    const action = {
-      type: CHANGE_INPUT_VAL,
-      value: e.target.value
-    }
+    const action = getInputValChangeAction(e.target.value);
     store.dispatch(action);
   }
 
   handleDelete = (index) => {
-    const action = {
-      type: DELETE_ITEM,
-      index
-    }
+    const action = handleDelete(index);
     store.dispatch(action);
   }
 
