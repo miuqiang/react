@@ -3,6 +3,8 @@ import { HashRouter, Route, Switch } from 'react-router-dom';
 
 const Login = lazy(() => import('../views/login'));
 const Layout = lazy(() => import('../views/layout'));
+const ToDo = lazy(() => import('../components/ToDoList'));
+
 
 export default class RouterWrap extends Component {
   render() {
@@ -11,8 +13,9 @@ export default class RouterWrap extends Component {
         <HashRouter>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
-              <Route path="/" component = {Layout} exact></Route>
-              <Route path="/login" component = {Login}></Route>
+                <Route path="/" component = {Layout} exact></Route>
+                <Route path="/login" component = {Login}></Route>
+                <Route path="/todo" component = {ToDo}></Route>
             </Switch>
           </Suspense>
         </HashRouter>

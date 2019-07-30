@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
-import ToDoItemUi from './ToDoItemUi.jsx';
-import store from '../store/index';
+import ToDoItemUi from './ToDoItemUi';
 import { getInputValChangeAction, handleSubmit, handleDelete } from "../store/actionCreators.js";
-export default class ToDoList extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = store.getState();
-    store.subscribe(this.handleStoreChange);
-  }
+import { connect } from 'react-redux';
+class ToDoList extends Component {
 
   render() {
     return (
       <ToDoItemUi
-        list={this.state.list}
-        value={this.state.value}
-        handleChange={this.handleChange}
-        handleEnter={this.handleEnter}
-        handleClick={this.handleClick}
-        handleDelete={this.handleDelete}
+        list={this.props.list}
+        value={this.props.value}
+        handleChange={this.props.handleChange}
+        handleEnter={this.props.handleEnter}
+        handleClick={this.props.handleClick}
+        handleDelete={this.props.handleDelete}
       />
     )
   }
@@ -26,30 +21,44 @@ export default class ToDoList extends Component {
   componentDidMount() {
     console.log('1')
   }
+}
 
-  handleClick = () => {
-    if (!this.state.value) return;
-    const action = handleSubmit();
-    store.dispatch(action);
-  }
-
-  handleChange = (e) => {
-    const action = getInputValChangeAction(e.target.value);
-    store.dispatch(action);
-  }
-
-  handleDelete = (index) => {
-    const action = handleDelete(index);
-    store.dispatch(action);
-  }
-
-  handleEnter = (e) => {
-    if (e.keyCode === 13) {
-      this.handleClick();
-    }
-  }
-
-  handleStoreChange = () => {
-    this.setState(store.getState());
+// 获取数据
+const mapStateToProps = (state) => {
+  return {
+    list: state.list,
+    value: state.value
   }
 }
+
+// 派发dispatch
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleClick() {
+      const action = handleSubmit();
+      dispatch(action);
+    },
+
+    handleChange(e) {
+      const action = getInputValChangeAction(e.target.value);
+      dispatch(action);
+    },
+
+    handleDelete(index) {
+      const action = handleDelete(index);
+      dispatch(action);
+    },
+
+    handleEnter(e) {
+      if (e.keyCode === 13) {
+        console.log(this)
+        // handleClick();
+
+        const action = handleSubmit();
+        dispatch(action);
+      }
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDoList);
